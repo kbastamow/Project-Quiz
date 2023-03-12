@@ -6,29 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles.css">      
+  <link rel="stylesheet" href="style.css">      
   <title>Document</title>
 </head>
 <body>
   <header>HERE GOES HEADER</header>
     <section id="home">
-      <div>Go to quiz
-        <button id="quizBtn"></button>
+      <div>
+        <button id="quizBtn">Go to quiz</button>
       </div>
       <div>Stats</div>
     </section>
 
+
     <section id="quiz">
-      <div id="question">question</div>
-      <div id="answers">inside buttons from JS</div>
-      <div id="nextBtn">here goes button "next"</div>
+      <div id="question"></div>
+      <div id="answers"></div>
+      <button id="nextBtn">NEXT</button>
     </section>
 
 
     <section id="score">
-      <div>results</div>
-      <div id="restart-Btn"></div>
-    </section>
+      <div>RESULTADOS COUNTER</div>
+      <!-- Para pintar los puntos (que se vean en formato GRANDE)   -->
+      <div id="counterDiv"></div>
+      <!-- Para pintar la frase divertida que acompaña al resultado -->
+        <div id="sentenceDiv"></div>
+      <button id="restartBtn">Restart Quiz</button>
+      </section>
 
 
 
