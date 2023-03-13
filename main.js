@@ -19,6 +19,7 @@
 const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
 const clearBtn = document.getElementById("clearBtn")
+const reviewBtn =document.getElementById("reviewBtn")
 
 //Sections
 const home = document.getElementById("home");
@@ -32,14 +33,11 @@ const answers = document.getElementById("answers")
 const msg = document.getElementById("msg")
 const counterDiv = document.getElementById("counterDiv");
 const sentenceDiv = document.getElementById("sentenceDiv");
-const clearedMsg = document.getElementById("clearedMsg")
+const clearedMsg = document.getElementById("clearedMsg");
+const questionsPopup = document.getElementById("questionsPopup");
 
-//Event Listeners
-nextBtn.addEventListener("click", showQuestion);
-restartBtn.addEventListener("click", restartQuiz);
-quizBtn.addEventListener("click", showQuestion);
-clearBtn.addEventListener("click", clearStorage); //Clears local storage
 
+const image = document.getElementById("image");
 
 //MOSTRAR -OCULTAR "PÁGINAS ("Sections")
 function reveal(page) {
@@ -52,22 +50,26 @@ function reveal(page) {
 reveal(home);
 
 let quizArray;
-
-axios.get("https://opentdb.com/api.php?amount=10&type=multiple")
-  .then(res => {
-      quizArray = res.data.results;
-      // console.log(quizArray);
-       })
-   .catch((err) => console.error(err));
-
-
-//Variables that change:
-
 let qIndex = 0;
 let correctAnswer = "";
 let counter = 0;
 
+
+async function startQuiz(e) {
+  e.preventDefault();
+  try {
+    const res = await axios.get("https://opentdb.com/api.php?amount=10&type=multiple");
+    quizArray = res.data.results;
+    showQuestion() 
+  } catch (error) {
+      console.error(error) 
+    }
+}
+
+//Variables that change:
+
 function showQuestion() {
+  console.log(quizArray);    
   reveal(quiz);
   resetState();
   nextBtn.classList.remove("hide");
@@ -127,24 +129,46 @@ function restartQuiz() {
   qIndex = 0;
   counter = 0;
   reveal(home);
+  questionsPopup.innerHTML = "";
 }
+
 
 function results() {
   reveal(score);
   saveScore()  //Save in local storage
   counterDiv.innerHTML = `${counter} Points`; //JOAN: HE PUESTO ESTE AQUÍ, así ahorramos líneas de código cuando no lo repetimos en cada "if". Cambié los ifs a "else if".
   if (counter <= 3) {
+    image.setAttribute("src", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png")
     sentenceDiv.innerHTML = `You better look for a job at McDonalds!`;  
   } else if (counter > 3 && counter < 5) {
+    image.setAttribute("src", "https://media.istockphoto.com/id/1186712099/photo/walking-into-the-abyss-while-using-smartphone.jpg?s=170667a&w=0&k=20&c=-I2on4piBRgMXFPLHRxZKv5TLUNKT3_lyxKsYaZR9kg=")
     sentenceDiv.innerHTML = `You're on the path to success!`;
   } else if (counter > 5 && counter < 7) {
+    image.setAttribute("src", "https://imageio.forbes.com/specials-images/imageserve/5bb22ae84bbe6f67d2e82e05/0x0.jpg?format=jpg&crop=1012,1013,x627,y129,safe&height=416&width=416&fit=bounds")
     sentenceDiv.innerHTML = `You're on your way to becoming the next Bezos`;
   } else if (counter > 7 && counter <= 9) {
+    image.setAttribute("src", "https://jingdaily.com/wp-content/uploads/2013/10/Screen-Shot-2013-10-09-at-2.54.19-AM.jpg")
     sentenceDiv.innerHTML = `Your insane points will bring you your dreamed yacht, supercar & private resort in Ibiza`;
   } else {
+    image.setAttribute("src", "https://t3.ftcdn.net/jpg/05/64/37/30/360_F_564373014_pREjFn0SL1hd1TwRAcFfiQqNvD2RmhnT.jpg")
     sentenceDiv.innerHTML = `Will your points let you into Valhalla? Yes!`
   }
 }
+
+
+function studyQs() {
+  quizArray.forEach(item => {
+    const question = document.createElement("div");
+    questionsPopup.appendChild(question);
+    question.innerHTML += `<p>${item.question}</p>
+                          <p>${item.correct_answer}</p>`
+  })
+
+}
+
+
+
+
 
 function saveScore() {
   const scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
@@ -166,6 +190,15 @@ function clearStorage() {
     clearBtn.innerHTML = "ARE YOU SURE?"
   }
 }
+
+//Event Listeners
+nextBtn.addEventListener("click", showQuestion);
+restartBtn.addEventListener("click", restartQuiz);
+quizBtn.addEventListener("click", startQuiz);   //CHANGED THIS 
+clearBtn.addEventListener("click", clearStorage); //Clears local storage
+reviewBtn.addEventListener("click", studyQs);
+
+
 
 
 //ORIGINAL PHRASES (with grammar checked):
