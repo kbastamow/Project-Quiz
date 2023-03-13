@@ -1,5 +1,5 @@
 .hide{
-  display: none;
+  display: none !important;
 }
 /* Uso estos ejemplos de color para comprobar */
 .correct {

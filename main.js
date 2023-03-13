@@ -37,16 +37,18 @@ function reveal(page) {
 }
 
 async function startQuiz(e) {
+  e.preventDefault();
   try {
     const res = await axios.get("https://opentdb.com/api.php?amount=10&type=multiple");
     quizArray = res.data.results;
-    showQuestion() 
+    showQuestion(e) 
   } catch (error) {
       console.error(error) 
     }
 }
 
-function showQuestion() {
+function showQuestion(e) {
+  e.preventDefault();
   reveal(quiz);
   resetState();
   nextBtn.classList.remove("hide");
@@ -74,12 +76,12 @@ function selectAnswer(e) {
   document.querySelectorAll("#answers button").forEach((button => button.removeEventListener("click", selectAnswer))); //Prevents multiples clicks in answers
   if(this.classList.contains("correct")) {
    let msg = document.createElement("div");
-   msg.innerHTML = "CORRECT";
+   msg.innerHTML = `<p class="alert alert-success border-0 fw-bold">CORRECT</p>` //NEW
    answers.appendChild(msg);
      counter +=1 ;
   } else {
    let msg = document.createElement("div");
-   msg.innerHTML = `INCORRECT. Correct answer: ${correctAnswer}`
+   msg.innerHTML = `<p class="alert alert-danger border-0 fw-bold"><span class="fw-bold">INCORRECT.</span> Correct answer: ${correctAnswer}</p>` //NEW
    answers.appendChild(msg);
   }
 

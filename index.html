@@ -9,20 +9,27 @@
   <link rel="stylesheet" href="styles.css">      
   <title>Document</title>
 </head>
-<body>
-  <header>HERE GOES HEADER</header>
-    <section id="home">
-      <div>
-        <button id="quizBtn">Go to quiz</button>
+<body class="container-fluid text-bg-dark p-0">
+  <header class="h1 text-center py-3 bg-black text-light">HERE GOES HEADER</header>
+    
+  <section id="home" class="d-flex flex-column gap-3 text-center align-items-center my-3 ">
+      <div class="border border-danger border-4 py-4 px-2 text-bg-light col-11 col-md-7">
+        <h3>A challenge that will test your wit and wisdom.
+          <h3>Are you Ready?</h3>
+        <button id="quizBtn" class="btn btn-lg btn-danger my-4 px-5 py-3 w-50 shadow">Go to quiz</button>
       </div>
-      <div>Stats</div>
+      <div class="border border-danger border-4 py-4 text-bg-light col-11 col-md-7">Stats</div>
     </section>
 
 
-    <section id="quiz">
-      <div id="question"></div>
-      <div id="answers"></div>
-      <button id="nextBtn">NEXT</button>
+    <section id="quiz" class="d-flex flex-column gap-3 text-center align-items-center my-3">
+      <div class="card d-flex flex-column gap-5 text-dark rounded-0 border border-warning border-4">  <!--new Div for styling purposes-->
+        <div class="card-body"> <!--new Div for styling purposes-->
+        <div id="question" class="card-title  fs-4 py-3"></div>
+        <div id="answers" class="d-flex flex-column gap-4 py-3"></div>
+        <button id="nextBtn" class="btn btn-dark shadow my-3 px-5">NEXT</button>
+      </div>
+      </div>
     </section>
 
 
