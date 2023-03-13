@@ -7,54 +7,64 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css">      
-  <title>Document</title>
+  <title>SuperQuiz</title>
 </head>
 <body class="container-fluid text-bg-dark p-0">
-  <header class="h1 text-center py-3 bg-black text-light">HERE GOES HEADER</header>
-    
+  <header class="h1 text-center py-3 bg-black text-light">SUPERQUIZ</header>
+
   <section id="home" class="d-flex flex-column gap-3 text-center align-items-center my-3 ">
-      <div class="border border-danger border-4 py-4 px-2 text-bg-light col-11 col-md-7">
-        <h3>A challenge that will test your wit and wisdom.
-          <h3>Are you Ready?</h3>
+    <div class="border border-danger border-4 py-4 px-2 text-bg-light col-11 col-md-7">
+      <h3>A challenge that will test your wit and wisdom.
+        <h3>Are you Ready?</h3>
         <button id="quizBtn" class="btn btn-lg btn-danger my-4 px-5 py-3 w-50 shadow">Go to quiz</button>
-      </div>
-      <div class="border border-danger border-4 py-4 text-bg-light col-11 col-md-7">Stats</div>
-    </section>
+    </div>
+    <div class="border border-danger border-4 py-4 text-bg-light col-11 col-md-7">Stats</div>
+  </section>
 
 
-    <section id="quiz" class="d-flex flex-column gap-3 text-center align-items-center my-3">
-      <div class="card d-flex flex-column gap-5 text-dark rounded-0 border border-warning border-4">  <!--new Div for styling purposes-->
-        <div class="card-body"> <!--new Div for styling purposes-->
+  <section id="quiz" class="d-flex flex-column gap-3 text-center align-items-center my-3">
+    <div class="card d-flex flex-column gap-5 text-dark rounded-0 border border-warning border-4">
+      <!--new Div for styling purposes-->
+      <div class="card-body"> <!--new Div for styling purposes-->
         <div id="question" class="card-title  fs-4 py-3"></div>
-        <div id="answers" class="d-flex flex-column gap-4 py-3"></div>
-        <button id="nextBtn" class="btn btn-dark shadow my-3 px-5">NEXT</button>
+        <div id="answers" class="d-flex flex-column gap-4 py-2"></div>
+        <button id="nextBtn" class="btn btn-dark shadow my-2 px-5">NEXT</button>
       </div>
-      </div>
-    </section>
+    </div>
+  </section>
 
 
 
-    <!--JOAN: he añadido un botón y dos divs para mostrar promedio & limpiar local storage-->
-    <section id="score">
-      <div>RESULTS:</div>
-      <!-- Para pintar los puntos (que se vean en formato GRANDE)   -->
-      <div id="counterDiv"></div>
+  <section id="score" class="d-flex flex-column gap-3 text-center align-items-center my-3 ">
+    <div class="border border-danger border-4 py-4 px-2 text-bg-light col-11 col-md-7"> <!--NEW div for styling-->
+      <div id="counterDiv" class="h2"></div>
       <!-- Para pintar la frase divertida que acompaña al resultado -->
-        <div id="sentenceDiv"></div>
-        <div id="imageDiv"> <!--not being used ATM-->
-          <img id ="image" src="" alt="Results Picture">
-        </div>
-        <div id="average"></div>
-      <button id="restartBtn">Restart Quiz</button>
-      <button id="reviewBtn">Review Questions</button>
-      <button id="clearBtn">Clear game history</button>
+      <div id="sentenceDiv" class="h4"></div>
+      <div>
+        <img id="image" class="shadow img-thumbnail" src="" alt="Results Picture">
+      </div>
+      <div id="average" class="py-2 h5"></div>
+      <button id="restartBtn" class="btn btn-dark shadow my-3 px-5">Restart Quiz</button>
+      <button id="reviewBtn" class="btn btn-dark shadow my-3 px-5" data-bs-toggle="modal"
+        data-bs-target="#myModal">Review Questions</button>
+      <button id="clearBtn" class="btn btn-dark shadow my-3 px-5">Clear game history</button>
       <div id="clearedMsg"></div>
-      <div id = "questionsPopup"></div>
 
-      </section>
- 
-  
+      <!--NEW: div for modal popup-->
+      <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content border-dark rounded-0">
+            <div class="modal-header">
+              <div class="h4 mt-1 ms-2 text-center">Learn from your mistakes</div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div id="questionsPopup" class="modal-body"></div>
+          </div>
+        </div>
+      </div>
 
+    </div>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

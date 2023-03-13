@@ -48,6 +48,7 @@ async function startQuiz(e) {
 }
 
 function showQuestion(e) {
+  console.log(counter);
   e.preventDefault();
   reveal(quiz);
   resetState();
@@ -59,6 +60,7 @@ function showQuestion(e) {
   // console.log(options);
   options.forEach((option) => {
     const button = document.createElement("button");
+    button.setAttribute("class","btn btn-outline-warning border-2 rounded-0 text-dark shadow"); //NEW
     button.innerHTML = option;
     if (option == correctAnswer) {
       button.classList.add("correct");
@@ -74,6 +76,11 @@ function selectAnswer(e) {
   e.preventDefault();
   nextBtn.removeAttribute("disabled");
   document.querySelectorAll("#answers button").forEach((button => button.removeEventListener("click", selectAnswer))); //Prevents multiples clicks in answers
+  
+  //NEW: the two lines below change the bootstrap style of selected button to be filled with color:
+  const selectedStyle = this.getAttribute("class").replace("btn-outline-warning", "btn-warning");
+  this.setAttribute("class", selectedStyle);
+
   if(this.classList.contains("correct")) {
    let msg = document.createElement("div");
    msg.innerHTML = `<p class="alert alert-success border-0 fw-bold">CORRECT</p>` //NEW
@@ -88,6 +95,7 @@ function selectAnswer(e) {
   if (quizArray.length == qIndex)  {    
    nextBtn.classList.add("hide");
    const resultBtn = document.createElement("button");
+   resultBtn.setAttribute("class", "btn btn-dark shadow my-2 px-5")
    resultBtn.innerHTML = "See your score";
    resultBtn.addEventListener("click", results);
    answers.appendChild(resultBtn); 
@@ -116,10 +124,10 @@ function results(e) {
   if (counter <= 3) {
     image.setAttribute("src", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png")
     sentenceDiv.innerHTML = `You better look for a job at McDonalds!`;
-  } else if (counter > 3 && counter < 5) {
+  } else if (counter > 3 && counter <= 5) {
     image.setAttribute("src", "https://media.istockphoto.com/id/1186712099/photo/walking-into-the-abyss-while-using-smartphone.jpg?s=170667a&w=0&k=20&c=-I2on4piBRgMXFPLHRxZKv5TLUNKT3_lyxKsYaZR9kg=")
     sentenceDiv.innerHTML = `You're on the path to success!`;
-  } else if (counter > 5 && counter < 7) {
+  } else if (counter > 5 && counter <= 7) {
     image.setAttribute("src", "https://imageio.forbes.com/specials-images/imageserve/5bb22ae84bbe6f67d2e82e05/0x0.jpg?format=jpg&crop=1012,1013,x627,y129,safe&height=416&width=416&fit=bounds")
     sentenceDiv.innerHTML = `You're on your way to becoming the next Bezos`;
   } else if (counter > 7 && counter <= 9) {
@@ -135,8 +143,8 @@ function studyQs() {
   quizArray.forEach(item => {
     const question = document.createElement("div");
     questionsPopup.appendChild(question);
-    question.innerHTML += `<p>${item.question}</p>
-                          <p>${item.correct_answer}</p>`
+    question.innerHTML += `<p class="fw-bold mb-0">${item.question}</p>
+                           <p>${item.correct_answer}</p>`
   })
 }
 
@@ -144,7 +152,7 @@ function saveScore() {
   const scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
   scoreArray.push(counter);
   localStorage.setItem("scores", JSON.stringify(scoreArray));
-  average.innerHTML = `This was your game number ${scoreArray.length}. Your average is:  ${Number(scoreArray.reduce((acc, val) => (acc + val)) / scoreArray.length).toFixed(0)}/10`; //Count the average of the array using "reduce", convert to number and eliminate decimals with "toFixed"
+  average.innerHTML = `You've played ${scoreArray.length} time(s). Your average is:  ${Number(scoreArray.reduce((acc, val) => (acc + val)) / scoreArray.length).toFixed(0)}/10`; //Count the average of the array using "reduce", convert to number and eliminate decimals with "toFixed"
 }
 
 function clearStorage() {
@@ -152,11 +160,11 @@ function clearStorage() {
     localStorage.clear();
     clearBtn.classList.remove("clickedOnce");
     clearBtn.innerHTML = "Clear game history"
-    clearedMsg.innerHTML = "Evidence destroyed"
+    clearedMsg.innerHTML = `<p class="text-danger fw-bold">Evidence destroyed</p>`
     setTimeout(()=> clearedMsg.innerHTML = "", 4000);    
-  } else {         //Adds a class to button to show it's been clicked once to get confirmation from user
-    clearBtn.classList.add("clickedOnce");
-    clearBtn.innerHTML = "ARE YOU SURE?"
+  } else {        
+    clearBtn.classList.add("clickedOnce");  //Adds a class to button to show it's been clicked once to get confirmation from user
+    clearBtn.innerHTML = "ARE YOU SURE?";
   }
 }
 
