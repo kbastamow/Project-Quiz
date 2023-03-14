@@ -54,13 +54,13 @@ function showQuestion(e) {
   resetState();
   nextBtn.classList.remove("hide");
   nextBtn.setAttribute("disabled", "true");
-  question.innerHTML = quizArray[qIndex].question;
   correctAnswer = quizArray[qIndex].correct_answer;
   const options = [...quizArray[qIndex].incorrect_answers, correctAnswer].sort();
-  // console.log(options);
+  
+  question.innerHTML = quizArray[qIndex].question;
   options.forEach((option) => {
     const button = document.createElement("button");
-    button.setAttribute("class","btn btn-outline-warning border-2 rounded-0 text-dark shadow"); //NEW
+    button.setAttribute("class","col-md-7 btn btn-outline-warning border-2 rounded-0 text-dark shadow"); //NEW
     button.innerHTML = option;
     if (option == correctAnswer) {
       button.classList.add("correct");
@@ -95,7 +95,7 @@ function selectAnswer(e) {
   if (quizArray.length == qIndex)  {    
    nextBtn.classList.add("hide");
    const resultBtn = document.createElement("button");
-   resultBtn.setAttribute("class", "btn btn-dark shadow my-2 px-5")
+   resultBtn.setAttribute("class", "btn btn-dark shadow col-md-7 mb-1 px-5")
    resultBtn.innerHTML = "See your score";
    resultBtn.addEventListener("click", results);
    answers.appendChild(resultBtn); 
@@ -148,6 +148,8 @@ function studyQs() {
   })
 }
 
+
+
 function saveScore() {
   const scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
   scoreArray.push(counter);
@@ -167,6 +169,10 @@ function clearStorage() {
     clearBtn.innerHTML = "ARE YOU SURE?";
   }
 }
+
+
+
+
 
 //Event Listeners
 nextBtn.addEventListener("click", showQuestion);
