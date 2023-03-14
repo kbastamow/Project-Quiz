@@ -21,6 +21,8 @@ const sentenceDiv = document.getElementById("sentenceDiv");
 const clearedMsg = document.getElementById("clearedMsg");
 const questionsPopup = document.getElementById("questionsPopup");
 const image = document.getElementById("image");
+const chartDiv = document.getElementById("chartDiv")
+
 
 
 //Global Variables - change round by round
@@ -28,6 +30,7 @@ let quizArray;
 let qIndex = 0;
 let correctAnswer = "";
 let counter = 0;
+let scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
 
 function reveal(page) {
   home.classList.add("hide");
@@ -48,10 +51,9 @@ async function startQuiz(e) {
 }
 
 function showQuestion(e) {
-  console.log(counter);
   e.preventDefault();
   reveal(quiz);
-  resetState();
+  resetState(answers);
   nextBtn.classList.remove("hide");
   nextBtn.setAttribute("disabled", "true");
   correctAnswer = quizArray[qIndex].correct_answer;
@@ -60,7 +62,7 @@ function showQuestion(e) {
   question.innerHTML = quizArray[qIndex].question;
   options.forEach((option) => {
     const button = document.createElement("button");
-    button.setAttribute("class","col-md-7 btn btn-outline-warning border-2 rounded-0 text-dark shadow"); //NEW
+    button.setAttribute("class","col-12 col-md-7 btn btn-outline-warning border-2 text-dark shadow"); 
     button.innerHTML = option;
     if (option == correctAnswer) {
       button.classList.add("correct");
@@ -102,9 +104,9 @@ function selectAnswer(e) {
  } 
 }
 
-function resetState() {
-  while (answers.firstChild) {
-    answers.removeChild(answers.firstChild);
+function resetState(element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
   }
 }
 
@@ -113,6 +115,7 @@ function restartQuiz(e) {
   questionsPopup.innerHTML = "";
   qIndex = 0;
   counter = 0;
+  showStats(); 
   reveal(home);
 }
 
@@ -148,18 +151,16 @@ function studyQs() {
   })
 }
 
-
-
 function saveScore() {
-  const scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
   scoreArray.push(counter);
   localStorage.setItem("scores", JSON.stringify(scoreArray));
-  average.innerHTML = `You've played ${scoreArray.length} time(s). Your average is:  ${Number(scoreArray.reduce((acc, val) => (acc + val)) / scoreArray.length).toFixed(0)}/10`; //Count the average of the array using "reduce", convert to number and eliminate decimals with "toFixed"
 }
 
 function clearStorage() {
   if (clearBtn.classList.contains("clickedOnce")){         
     localStorage.clear();
+    scoreArray = [];
+    resetState(chartDiv);
     clearBtn.classList.remove("clickedOnce");
     clearBtn.innerHTML = "Clear game history"
     clearedMsg.innerHTML = `<p class="text-danger fw-bold">Evidence destroyed</p>`
@@ -170,8 +171,15 @@ function clearStorage() {
   }
 }
 
-
-
+function showStats() {
+  if(scoreArray.length == 0) {
+    average.innerHTML = "No game history";
+  }else {
+    average.innerHTML = `You've played ${scoreArray.length} time(s). Your average is:  ${Number(scoreArray.reduce((acc, val) => (acc + val)) / scoreArray.length).toFixed(0)}/10`;
+    chartDiv.innerHTML = `<canvas id="chart"></canvas>`;
+    createChart();
+  }
+  }
 
 
 //Event Listeners
@@ -184,3 +192,43 @@ reviewBtn.addEventListener("click", studyQs);
 
 
 reveal(home);
+showStats(); 
+
+
+
+
+
+
+function createChart () {
+let xValues = scoreArray.map((game,index) => "game no " + (index + 1));
+let yValues = scoreArray.map(game => game);
+const barColors = "black";
+new Chart("chart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues,
+      barPercentage: 0.2
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Evolution of games"
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 10
+        }
+      }]
+    }
+  }
+});
+}
+
+
