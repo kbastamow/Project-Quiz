@@ -73,6 +73,7 @@ Coding priorities have been re-checked almost dayly in order to speed up project
 >Things to do
 >- [x] Improve score section to show funny answers based on scoring
 >- [x] Add images to the score to improve impact 
+>- [X] Add graphic score in main view
 >- [ ] Multiplayer option
 >- [ ] On start,select difficulty level (radio buttons)
 >- [ ] On start,select topic (collapsible list)
