@@ -1,44 +1,37 @@
-
-//** Traernos los elementos del DOM:
-
-//Buttons
-const nextBtn = document.getElementById("nextBtn");
-const restartBtn = document.getElementById("restartBtn");
-const clearBtn = document.getElementById("clearBtn")
-const reviewBtn =document.getElementById("reviewBtn")
+//Dom Variables
 
 //Sections
 const home = document.getElementById("home");
 const quiz = document.getElementById("quiz");
 const score = document.getElementById("score");
 
+//Buttons
+const quizBtn = document.getElementById("quizBtn");
+const nextBtn = document.getElementById("nextBtn");
+const restartBtn = document.getElementById("restartBtn");
+const clearBtn = document.getElementById("clearBtn")
+const reviewBtn =document.getElementById("reviewBtn")
+
+
 //Divs
 const question = document.getElementById("question");
 const answers = document.getElementById("answers")
-const msg = document.getElementById("msg")
 const counterDiv = document.getElementById("counterDiv");
 const sentenceDiv = document.getElementById("sentenceDiv");
+const image = document.getElementById("image");
 const clearedMsg = document.getElementById("clearedMsg");
 const questionsPopup = document.getElementById("questionsPopup");
-const image = document.getElementById("image");
 const chartDiv = document.getElementById("chartDiv")
 
 
-
-//Global Variables - change round by round
+//Global Variables that change round by round
 let quizArray;
 let qIndex = 0;
 let correctAnswer = "";
 let counter = 0;
-let scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
+let scoreArray = [];
 
-function reveal(page) {
-  home.classList.add("hide");
-  quiz.classList.add("hide");
-  score.classList.add("hide");
-  page.classList.remove("hide");
-}
-
+//Functions
 async function startQuiz(e) {
   e.preventDefault();
   try {
@@ -73,19 +66,16 @@ function showQuestion(e) {
   qIndex += 1;
 }
 
-
 function selectAnswer(e) {
   e.preventDefault();
   nextBtn.removeAttribute("disabled");
-  document.querySelectorAll("#answers button").forEach((button => button.removeEventListener("click", selectAnswer))); //Prevents multiples clicks in answers
-  
-  //NEW: the two lines below change the bootstrap style of selected button to be filled with color:
+  document.querySelectorAll("#answers button").forEach((button => button.removeEventListener("click", selectAnswer))); 
   const selectedStyle = this.getAttribute("class").replace("btn-outline-warning", "btn-warning");
   this.setAttribute("class", selectedStyle);
 
   if(this.classList.contains("correct")) {
    let msg = document.createElement("div");
-   msg.innerHTML = `<p class="alert alert-success border-0 fw-bold">CORRECT</p>` //NEW
+   msg.innerHTML = `<p class="alert alert-success border-0 fw-bold">CORRECT</p>` 
    answers.appendChild(msg);
      counter +=1 ;
   } else {
@@ -104,24 +94,9 @@ function selectAnswer(e) {
  } 
 }
 
-function resetState(element) {
-  while (element.firstChild) {
-    element.removeChild(element.firstChild);
-  }
-}
-
-function restartQuiz(e) {
-  e.preventDefault();
-  questionsPopup.innerHTML = "";
-  qIndex = 0;
-  counter = 0;
-  showStats(); 
-  reveal(home);
-}
-
 function results(e) {
   e.preventDefault();
-  saveScore();  //Save in local storage
+  saveScore();  
   reveal(score);
   counterDiv.innerHTML = `${counter} Points`;
   if (counter <= 3) {
@@ -142,6 +117,26 @@ function results(e) {
   }
 }
 
+function saveScore() {
+  scoreArray.push(counter);
+  localStorage.setItem("scores", JSON.stringify(scoreArray));
+}
+
+function clearStorage() {
+  if (!clearBtn.classList.contains("clickedOnce")) {  //=If false (!)
+    clearBtn.classList.add("clickedOnce");  
+    clearBtn.innerHTML = "ARE YOU SURE?";
+  } else {
+    localStorage.clear();
+    scoreArray = [];
+    resetState(chartDiv);
+    clearBtn.classList.remove("clickedOnce");
+    clearBtn.innerHTML = "Clear game history"
+    clearedMsg.innerHTML = `<p class="text-danger fw-bold">Evidence destroyed</p>`
+    setTimeout(() => clearedMsg.innerHTML = "", 4000);
+  }
+}
+
 function studyQs() {
   quizArray.forEach(item => {
     const question = document.createElement("div");
@@ -151,27 +146,18 @@ function studyQs() {
   })
 }
 
-function saveScore() {
-  scoreArray.push(counter);
-  localStorage.setItem("scores", JSON.stringify(scoreArray));
-}
-
-function clearStorage() {
-  if (clearBtn.classList.contains("clickedOnce")){         
-    localStorage.clear();
-    scoreArray = [];
-    resetState(chartDiv);
-    clearBtn.classList.remove("clickedOnce");
-    clearBtn.innerHTML = "Clear game history"
-    clearedMsg.innerHTML = `<p class="text-danger fw-bold">Evidence destroyed</p>`
-    setTimeout(()=> clearedMsg.innerHTML = "", 4000);    
-  } else {        
-    clearBtn.classList.add("clickedOnce");  //Adds a class to button to show it's been clicked once to get confirmation from user
-    clearBtn.innerHTML = "ARE YOU SURE?";
-  }
+function restartQuiz(e) {
+  e.preventDefault();
+  questionsPopup.innerHTML = "";
+  qIndex = 0;
+  counter = 0;
+  image.setAttribute("src", "");
+  showStats(); 
+  reveal(home);
 }
 
 function showStats() {
+  scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
   if(scoreArray.length == 0) {
     average.innerHTML = "No game history";
   }else {
@@ -181,6 +167,51 @@ function showStats() {
   }
   }
 
+  function reveal(page) {
+    home.classList.add("hide");
+    quiz.classList.add("hide");
+    score.classList.add("hide");
+    page.classList.remove("hide");
+  }
+
+  function resetState(element) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+  }
+
+  function createChart () {
+    let xValues = scoreArray.map((game,index) => "game no " + (index + 1));
+    let yValues = scoreArray.map(game => game);
+    const barColors = "black";
+    new Chart("chart", {
+      type: "bar",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues,
+          barPercentage: 0.2
+        }]
+      },
+      options: {
+        legend: {display: false},
+        title: {
+          display: true,
+          text: "Evolution of games"
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 10
+            }
+          }]
+        }
+      }
+    });
+    }
+  
 
 //Event Listeners
 nextBtn.addEventListener("click", showQuestion);
@@ -190,45 +221,7 @@ clearBtn.addEventListener("click", clearStorage);
 reviewBtn.addEventListener("click", studyQs);
 
 
-
+// Called on initiation
 reveal(home);
 showStats(); 
-
-
-
-
-
-
-function createChart () {
-let xValues = scoreArray.map((game,index) => "game no " + (index + 1));
-let yValues = scoreArray.map(game => game);
-const barColors = "black";
-new Chart("chart", {
-  type: "bar",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues,
-      barPercentage: 0.2
-    }]
-  },
-  options: {
-    legend: {display: false},
-    title: {
-      display: true,
-      text: "Evolution of games"
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          min: 0,
-          max: 10
-        }
-      }]
-    }
-  }
-});
-}
-
 

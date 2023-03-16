@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
+.hide{
+  display: none !important;
+}
+
+header {
+  font-family: "Russo One", sans-serif;
+  animation: grow 3s;  
+}
+
+@keyframes grow {
+  30% {letter-spacing: 5vw;}
+  70% {letter-spacing: -1vw;}
+}
+
