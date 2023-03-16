@@ -74,6 +74,7 @@ Coding priorities have been re-checked almost dayly in order to speed up project
 >- [x] Improve score section to show funny answers based on scoring
 >- [x] Add images to the score to improve impact 
 >- [X] Add graphic score in main view
+>- [X] Add title animation on header
 >- [ ] Multiplayer option
 >- [ ] On start,select difficulty level (radio buttons)
 >- [ ] On start,select topic (collapsible list)
@@ -109,21 +110,26 @@ It means that we've created a nested div structure that allows us to stilish eac
         - Save results (JSON)
         - Clear results (JSON)
     - Add event listeners for buttons
-
+> __Note__
+To execute and run the chart,we've used **chart.js** , which needs to be inserted in css & js file.
 ## CSS notes 📋
 [⬆️](#quiz-game-project-)
 >CSS file has been linked inside the <head> section.
 >CSS as itself, only contains the main rule which manages the visibility of the views. Nothing else is brought from the styles.
 >BOOTSTRAP bas been imported using the *CDN links method* which allowed us to easily edit the CSS code without caring about problems related to Bootstrap source files location paths in our respective computers.
 >CDN Links has been placed on *<head>*and *<body>* sections of index.html page.
+>We've also used Bootswatchtemplate to create the visual setup.
+>Chart has been created using the script **chart.js**.
 
 >There are three views within the site:
     -Home: where two cards are shown:
         - Access to Quiz 
-        - Score statistics
+        - Score statistics 
     -Quiz: where the game canvas is showed,and game is played.
     -Score: where you get the game score
 
+> __Note__
+To execute and run the chart,we've used **chart.js** , which needs to be inserted in css & js file.
 > __Warning__
 To show and teach the gamers the right results and allow them to learn and improve their skills, a POPUP window is used instead of a new view. Thats why the project manages three views instead of four.
 
@@ -141,6 +147,7 @@ To show and teach the gamers the right results and allow them to learn and impro
 
 >* [*VISUAL STUDIO CODE*](https://code.visualstudio.com/) - Code editor used (Version: 1.75.1)
 >* [*BOOTSTRAP*] (https://getbootstrap.com) - CSS Framework (Version: 5.3.0) 
+>* [*BOOTSWATCH*] (https://bootswatch.com) - CSS Templates for Bootstrap
 >* [*Live Server*](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) -Extension that updates the choosen browser to see changes in real time.
 >* [*Live Share*](Version: 1.0.5832) -Extension that allow remote team coding under the same Visual Studio project. 
 
