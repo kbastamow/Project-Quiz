@@ -32,6 +32,13 @@ let counter = 0;
 let scoreArray = [];
 
 //Functions
+function reveal(page) {
+  home.classList.add("hide");
+  quiz.classList.add("hide");
+  score.classList.add("hide");
+  page.classList.remove("hide");
+}
+
 async function startQuiz(e) {
   e.preventDefault();
   try {
@@ -94,6 +101,12 @@ function selectAnswer(e) {
  } 
 }
 
+function resetState(element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+}
+
 function results(e) {
   e.preventDefault();
   saveScore();  
@@ -117,6 +130,15 @@ function results(e) {
   }
 }
 
+function studyQs() {
+  quizArray.forEach(item => {
+    const question = document.createElement("div");
+    questionsPopup.appendChild(question);
+    question.innerHTML += `<p class="fw-bold mb-0">${item.question}</p>
+                           <p>${item.correct_answer}</p>`
+  })
+}
+
 function saveScore() {
   scoreArray.push(counter);
   localStorage.setItem("scores", JSON.stringify(scoreArray));
@@ -137,25 +159,6 @@ function clearStorage() {
   }
 }
 
-function studyQs() {
-  quizArray.forEach(item => {
-    const question = document.createElement("div");
-    questionsPopup.appendChild(question);
-    question.innerHTML += `<p class="fw-bold mb-0">${item.question}</p>
-                           <p>${item.correct_answer}</p>`
-  })
-}
-
-function restartQuiz(e) {
-  e.preventDefault();
-  questionsPopup.innerHTML = "";
-  qIndex = 0;
-  counter = 0;
-  image.setAttribute("src", "");
-  showStats(); 
-  reveal(home);
-}
-
 function showStats() {
   scoreArray = JSON.parse(localStorage.getItem("scores")) || [];
   if(scoreArray.length == 0) {
@@ -165,19 +168,6 @@ function showStats() {
     chartDiv.innerHTML = `<canvas id="chart"></canvas>`;
     createChart();
   }
-  }
-
-  function reveal(page) {
-    home.classList.add("hide");
-    quiz.classList.add("hide");
-    score.classList.add("hide");
-    page.classList.remove("hide");
-  }
-
-  function resetState(element) {
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
-    }
   }
 
   function createChart () {
@@ -211,8 +201,19 @@ function showStats() {
       }
     });
     }
-  
 
+
+function restartQuiz(e) {
+  e.preventDefault();
+  questionsPopup.innerHTML = "";
+  qIndex = 0;
+  counter = 0;
+  image.setAttribute("src", "");
+  showStats(); 
+  reveal(home);
+}
+
+ 
 //Event Listeners
 nextBtn.addEventListener("click", showQuestion);
 restartBtn.addEventListener("click", restartQuiz);
