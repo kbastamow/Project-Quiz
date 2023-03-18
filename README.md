@@ -154,10 +154,11 @@ To show and teach the gamers the right results and allow them to learn and impro
 *VISUAL STUDIO CODE*
 
 >* [*VISUAL STUDIO CODE*](https://code.visualstudio.com/) - Code editor used (Version: 1.75.1)
->* [*BOOTSTRAP*] (https://getbootstrap.com) - CSS Framework (Version: 5.3.0) 
->* [*BOOTSWATCH*] (https://bootswatch.com) - CSS Templates for Bootstrap
+>* [*BOOTSTRAP*](https://getbootstrap.com) - CSS Framework (Version: 5.3.0) 
+>* [*BOOTSWATCH*](https://bootswatch.com) - CSS Templates for Bootstrap
+>* [*Open trivia database*](https://opentdb.com/) - API for questions
 >* [*Live Server*](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) -Extension that updates the choosen browser to see changes in real time.
->* [*Live Share*](Version: 1.0.5832) -Extension that allow remote team coding under the same Visual Studio project. 
+>* [*Live Share*](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) -Extension that allow remote team coding under the same Visual Studio project  (Version: 1.0.5832). 
 
 ## Authors ✒️
 [⬆️](#quiz-game-project-)
